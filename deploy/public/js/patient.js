@@ -2,11 +2,13 @@ const urlParams = new URLSearchParams(window.location.search);
 const hospitalId = urlParams.get('id');
 let patientUrl = `https://5f2a96d76ae5cc0016422bab.mockapi.io/hospitals/${hospitalId}/patients`;
 let hospitalUrl = `https://5f2a96d76ae5cc0016422bab.mockapi.io/hospitals/${hospitalId}`;
+//lấy dữ liệu của hopitals trên mockapi
 axios.get(hospitalUrl)
     .then(response => {
         document.querySelector('h1').innerHTML = response.data.name;
     })
     .then(() => {
+        //lấy dữ liệu patient
         axios.get(patientUrl)
             .then(response => {
                 if (response.data.length > 0) {
@@ -176,7 +178,7 @@ function saveEditPatient(patientId) {
                     .then(response => {
                         if (response.data.length > 0) {
                             let content = ``;
-                            response.data.map(function (item, index) {
+                            response.data.map(item => {
                                 content += `<tr id="data-${item.id}">
                     <td>${item.id}</td>
                     <td>${item.name}</td>
@@ -214,7 +216,7 @@ function removePatient(patientId) {
         confirmButtonText: "Xóa",
     })
         .then(confirm => {
-            if (confirm.value) {
+            if (confirm) {
                 axios.delete(removeUrl)
                     .then(response => {
                         document.querySelector(`#data-${response.data.id}`).remove()
